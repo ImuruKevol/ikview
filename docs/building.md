@@ -59,3 +59,17 @@ IKVIEW_CODESIGN_IDENTITY="Developer ID Application: 개발자 이름 (TEAMID)" \
 ```
 
 이 옵션만으로 공증이 수행되지는 않습니다. 외부 라이브러리의 출처와 고지는 배포 앱의 `Contents/Resources/third-party`에 포함합니다.
+
+## 소스 묶음과 공개 배포
+
+IKView는 GPL-3.0-or-later로 제공합니다. 현재 설치 파일에는 Exiv2와 Qt 등 외부 라이브러리가 포함되므로, 설치 파일을 게시할 때는 해당 버전의 소스·고지도 함께 제공해야 합니다.
+
+패키징 중에는 번들 라이브러리의 원본 소스와 패치를 다운로드하여 SHA-256을 확인합니다. 최초 실행에는 네트워크와 추가 디스크 공간이 필요하며, 검증한 자료는 `build/license-sources/`에 캐시합니다. 캐시와 소스 묶음은 Git에 추가하지 않습니다.
+
+배포할 변경을 커밋하고 앱을 패키징한 뒤 소스 묶음을 만듭니다.
+
+```sh
+python3 scripts/package-sources.py
+```
+
+생성한 `dist/ikview-0.7.1-source.tar.gz`와 `dist/ikview-source-validation.json`을 설치 ZIP과 함께 게시합니다. 설치 파일 다운로드 위치에 소스 다운로드 링크도 표시해야 합니다. 자세한 조건과 수집 범위는 [소스 제공과 배포 안내](licensing.md)를 확인하세요.

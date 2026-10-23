@@ -10,7 +10,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/%EB%B2%84%EC%A0%84-0.7.1-64D3BF?style=flat-square&amp;labelColor=1B242E" alt="버전 0.7.1">
-  <img src="https://img.shields.io/badge/macOS-26%2B-1B242E?style=flat-square&amp;logo=apple&amp;logoColor=white" alt="macOS 26 이상">
+  <img src="https://img.shields.io/badge/macOS-26%2B-1B242E?style=flat-square" alt="macOS 26 이상">
   <img src="https://img.shields.io/badge/%EC%96%B8%EC%96%B4-C%2B%2B20-3479B8?style=flat-square" alt="개발 언어 C++20">
 </p>
 
@@ -64,6 +64,8 @@ PNG·WebP·TIFF·PDF 변환은 투명·반투명 여백을 지원합니다. PDF�
 
 <!-- 공개 스토리지에 설치 파일을 업로드한 뒤 이 위치에 다운로드 링크를 추가합니다. -->
 
+공개 배포 시 설치 ZIP과 같은 버전의 소스 묶음을 함께 제공합니다. 다운로드 링크도 나란히 표시합니다. [소스 제공 안내](docs/licensing.md)
+
 현재 배포본은 로컬 서명을 사용하며 Apple 공증은 적용하지 않았습니다. 다운로드한 앱의 실행이 차단되면 macOS **시스템 설정 → 개인정보 보호 및 보안**에서 차단된 앱을 확인하세요.
 
 ## 빠르게 시작하기
@@ -116,7 +118,7 @@ Finder 확장의 실제 활성화는 macOS 설정과 앱 서명 상태에 따라
 
 ## 직접 빌드
 
-C++20, CMake 3.24 이상, Qt 6.7 이상, libarchive가 필요합니다. Exiv2를 설치하면 EXIF 정보 처리를 함께 빌드합니다. 현재 검증 환경은 Apple Silicon과 Qt 6.12입니다.
+C++20, CMake 3.24 이상, Qt 6.7 이상, libarchive가 필요합니다. Exiv2를 설치하면 EXIF 정보 처리를 함께 빌드합니다. 배포본은 Exiv2를 포함하며 GPL 조건이 적용됩니다. 현재 검증 환경은 Apple Silicon과 Qt 6.12입니다.
 
 ```sh
 git clone https://github.com/ImuruKevol/ikview.git
@@ -159,9 +161,12 @@ C++20과 Qt Widgets로 UI를 구성하고, 이미지 표시는 Qt Quick의 Metal
 | [빌드 안내](docs/building.md) | 개발 환경, 창을 띄우지 않는 검사, 배포 파일 생성 |
 | [구조와 제한](docs/architecture.md) | 렌더링·캐시 설계, 지원 범위, 주요 코드 위치 |
 | [기여 안내](CONTRIBUTING.md) | 문제 제보와 변경 제안 |
+| [라이선스와 배포](docs/licensing.md) | 이미지 출처, 외부 라이브러리 고지, 해당 소스 제공 |
 
 ## 기여와 라이선스
 
 문제나 개선 제안은 [이슈](https://github.com/ImuruKevol/ikview/issues)로 남겨 주세요. 재현 절차와 사용 환경을 함께 적어 주시면 확인에 도움이 됩니다.
 
-프로젝트 자체의 소스 라이선스는 아직 지정되지 않았습니다. 사용 라이브러리와 배포 고지는 [외부 라이브러리 안내](THIRD_PARTY.md)에 정리했습니다. 배포 앱에도 각 라이브러리의 라이선스 문서를 포함합니다.
+IKView의 코드·문서·프로젝트 제작 이미지는 **GPL-3.0-or-later**로 제공합니다. 사용·수정·재배포와 상업적 이용이 가능하며, 배포할 때는 해당 소스 제공과 고지 유지 등 [라이선스 원문](LICENSE)의 조건을 따라야 합니다. 법이 허용하는 범위에서 무보증으로 제공합니다.
+
+외부 라이브러리에는 각각의 라이선스가 적용됩니다. [외부 라이브러리와 고지](THIRD_PARTY.md), [소스 제공과 배포 안내](docs/licensing.md)를 확인하세요. 앱에 열거나 변환하는 사용자 파일의 권리는 해당 파일의 권리자에게 있습니다.
