@@ -1,0 +1,32 @@
+#!/bin/sh
+# IKView managed terminal launcher v1
+set -eu
+task_bin_dir=$(CDPATH= cd -P -- "$(dirname -- "$0")" && pwd)
+task_config="$task_bin_dir/../share/ikview/app-path"
+if [ ! -r "$task_config" ]; then
+    printf '%s\n' 'IKView: app configuration is missing. Run the integration installer again.' >&2
+    exit 1
+fi
+IFS= read -r task_app < "$task_config"
+if [ ! -x "$task_app/Contents/MacOS/ikview" ]; then
+    printf 'IKView app is missing: %s\n' "$task_app" >&2
+    exit 1
+fi
+case "${1-}" in
+    --finder-enable|--finder-disable|--finder-status)
+        task_mode=$1
+        shift
+        [ "$#" -eq 0 ] || { printf '%s\n' 'IKView: Finder commands take no file arguments.' >&2; exit 64; }
+        case "$task_mode" in
+            --finder-enable) task_mode=--enable;;
+            --finder-disable) task_mode=--disable;;
+            --finder-status) task_mode=--status;;
+        esac
+        exec /bin/sh "$task_app/Contents/Resources/integration/finder-integration" --app "$task_app" "$task_mode";;
+    --) shift ;;
+    -*) exec "$task_app/Contents/MacOS/ikview" "$@" ;;
+esac
+if [ "$#" -eq 0 ]; then set -- "$PWD"; fi
+# open delivers file URLs to the existing application instance. Filenames are
+# positional arguments throughout, including spaces, quotes and shell syntax.
+exec /usr/bin/open -a "$task_app" -- "$@"

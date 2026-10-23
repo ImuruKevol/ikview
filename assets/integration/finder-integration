@@ -1,0 +1,58 @@
+#!/bin/sh
+# Native Finder extension registration. Never restart Finder or reset its DB.
+set -eu
+task_resources=$(CDPATH= cd -P -- "$(dirname -- "$0")" && pwd)
+task_app=""
+task_mode=--status
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --app) [ "$#" -ge 2 ] || exit 64; task_app=$2; shift 2;;
+        --enable|--disable|--status) task_mode=$1; shift;;
+        *) printf 'IKView Finder: unknown option: %s\n' "$1" >&2; exit 64;;
+    esac
+done
+if [ -z "$task_app" ]; then task_app=$(CDPATH= cd -- "$task_resources/../../.." && pwd -P); fi
+task_extension="$task_app/Contents/PlugIns/IKViewFinder.appex"
+task_identifier=io.ikview.desktop.finder
+if [ ! -x "$task_extension/Contents/MacOS/IKViewFinder" ]; then
+    printf 'IKView Finder extension is not bundled at %s\n' "$task_extension" >&2
+    exit 1
+fi
+if [ "$task_mode" = --enable ]; then
+    /usr/bin/codesign --verify --strict "$task_extension"
+    /usr/bin/pluginkit -a "$task_extension"
+    /usr/bin/pluginkit -e use -i "$task_identifier"
+elif [ "$task_mode" = --disable ]; then
+    /usr/bin/pluginkit -e ignore -i "$task_identifier"
+fi
+# pluginkit -e records a user election. It does not prove that Finder loaded
+# the extension; report registration, election and process state separately.
+task_state=$(/usr/bin/pluginkit -m -v -i "$task_identifier" 2>&1) || {
+    printf 'IKView Finder query failed: %s\n' "$task_state" >&2; exit 1;
+}
+task_registered=no
+task_election=unknown
+while IFS= read -r task_line; do
+    case "$task_line" in
+        *"$task_extension")
+            task_registered=yes
+            case "$task_line" in +*) task_election=use;; -*) task_election=ignore;; *) task_election=default;; esac;;
+    esac
+done <<EOF
+$task_state
+EOF
+task_running=no
+if /usr/bin/pgrep -x IKViewFinder >/dev/null 2>&1; then task_running=yes; fi
+printf 'Finder extension: %s\nRegistered at installed path: %s\nUser election: %s\nExtension process running: %s\n' \
+    "$task_identifier" "$task_registered" "$task_election" "$task_running"
+if [ "$task_running" = no ]; then
+    printf '%s\n' 'Finder has not loaded the extension. Close the context menu and browse to a folder, then check again.' \
+        'If it remains unavailable, check System Settings > General > Login Items & Extensions > Finder Extensions.'
+fi
+task_signing=$(/usr/bin/codesign -dvv "$task_extension" 2>&1 || :)
+case "$task_signing" in *'Signature=adhoc'*)
+    printf '%s\n' 'Signing: ad hoc local build. macOS may require an Apple Development or Developer ID signature before loading it.';;
+    *) printf '%s\n' 'Signing: certificate signature';;
+esac
+if [ "$task_registered" != yes ]; then exit 2; fi
+if [ "$task_mode" = --enable ] && [ "$task_election" != use ]; then exit 2; fi

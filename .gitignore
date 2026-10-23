@@ -1,0 +1,71 @@
+# 빌드·패키지·테스트 산출물
+/build*/
+/cmake-build-*/
+/out/
+/dist/
+/demo/
+/test-output/
+CMakeCache.txt
+CMakeFiles/
+CMakeUserPresets.json
+CTestTestfile.cmake
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+Testing/
+*.dSYM/
+*.gcda
+*.gcno
+*.profraw
+*.profdata
+*.log
+
+# 로컬 화면 갤러리와 개발 검토 기록
+# 공개 문서는 docs/*.md, 공개용 화면은 docs/images/에 둡니다.
+/docs/design-*/
+/docs/design-*.html
+/docs/design-*.md
+/docs/audit-*.md
+/docs/performance-*.md
+/docs/preferences-0.*.md
+/docs/workflows-0.*.md
+/docs/engineering.md
+/docs/toolbar-0.6-*.png
+/docs/screenshot.png
+
+# macOS·Windows 메타데이터
+.DS_Store
+._*
+.AppleDouble/
+.LSOverride
+Thumbs.db
+Desktop.ini
+
+# 편집기·임시 파일
+.idea/
+.vscode/
+.fleet/
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
+
+# Python 도구 캐시
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 로컬 환경·서명 자료
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.mobileprovision

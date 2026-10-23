@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="/ikview/style">
+    <file alias="check-dark-disabled.svg">../assets/style/check-dark-disabled.svg</file>
+    <file alias="check-dark.svg">../assets/style/check-dark.svg</file>
+    <file alias="check-light-disabled.svg">../assets/style/check-light-disabled.svg</file>
+    <file alias="check-light.svg">../assets/style/check-light.svg</file>
+    <file alias="down-dark-disabled.svg">../assets/style/down-dark-disabled.svg</file>
+    <file alias="down-dark.svg">../assets/style/down-dark.svg</file>
+    <file alias="down-light-disabled.svg">../assets/style/down-light-disabled.svg</file>
+    <file alias="down-light.svg">../assets/style/down-light.svg</file>
+    <file alias="up-dark-disabled.svg">../assets/style/up-dark-disabled.svg</file>
+    <file alias="up-dark.svg">../assets/style/up-dark.svg</file>
+    <file alias="up-light-disabled.svg">../assets/style/up-light-disabled.svg</file>
+    <file alias="up-light.svg">../assets/style/up-light.svg</file>
+  </qresource>
+</RCC>

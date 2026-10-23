@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>CFBundleName</key><string>ikview</string>
+  <key>CFBundleDisplayName</key><string>IKView</string>
+  <key>CFBundleExecutable</key><string>${MACOSX_BUNDLE_EXECUTABLE_NAME}</string>
+  <key>CFBundleIdentifier</key><string>io.ikview.desktop</string>
+  <key>CFBundleVersion</key><string>${PROJECT_VERSION}</string>
+  <key>CFBundleShortVersionString</key><string>${PROJECT_VERSION}</string>
+  <key>CFBundlePackageType</key><string>APPL</string>
+  <key>CFBundleIconFile</key><string>AppIcon.icns</string>
+  <key>LSMinimumSystemVersion</key><string>${CMAKE_OSX_DEPLOYMENT_TARGET}</string>
+  <key>NSHighResolutionCapable</key><true/>
+  <key>NSPrincipalClass</key><string>NSApplication</string>
+  <key>CFBundleURLTypes</key><array><dict>
+    <key>CFBundleURLName</key><string>io.ikview.desktop.finder-handoff</string>
+    <key>CFBundleTypeRole</key><string>Viewer</string>
+    <key>CFBundleURLSchemes</key><array><string>ikview</string></array>
+  </dict></array>
+  <key>NSDocumentsFolderUsageDescription</key><string>선택한 폴더의 이미지를 열고 탐색하기 위해 문서 폴더에 접근합니다.</string>
+  <key>NSDesktopFolderUsageDescription</key><string>선택한 폴더의 이미지를 열고 탐색하기 위해 데스크탑에 접근합니다.</string>
+  <key>NSDownloadsFolderUsageDescription</key><string>선택한 폴더의 이미지를 열고 탐색하기 위해 다운로드 폴더에 접근합니다.</string>
+  <key>NSNetworkVolumesUsageDescription</key><string>선택한 네트워크 폴더의 이미지를 열고 탐색합니다.</string>
+  <key>NSRemovableVolumesUsageDescription</key><string>선택한 외장 드라이브 폴더의 이미지를 열고 탐색합니다.</string>
+  <key>NSHumanReadableCopyright</key><string>ikview contributors</string>
+  <key>CFBundleDocumentTypes</key><array><dict>
+    <key>CFBundleTypeName</key><string>Images</string>
+    <key>CFBundleTypeRole</key><string>Viewer</string>
+    <key>LSHandlerRank</key><string>Alternate</string>
+    <key>LSItemContentTypes</key><array><string>public.image</string></array>
+  </dict><dict>
+    <key>CFBundleTypeName</key><string>Image archives</string>
+    <key>CFBundleTypeRole</key><string>Viewer</string>
+    <key>LSHandlerRank</key><string>Alternate</string>
+    <key>LSItemContentTypes</key><array>
+      <string>public.zip-archive</string><string>com.rarlab.rar-archive</string><string>org.7-zip.7-zip-archive</string>
+      <string>public.tar-archive</string><string>cx.c3.lha-archive</string>
+      <string>io.ikview.cbz-archive</string><string>io.ikview.cbr-archive</string><string>io.ikview.cbt-archive</string>
+    </array>
+  </dict><dict>
+    <key>CFBundleTypeName</key><string>PDF documents</string>
+    <key>CFBundleTypeRole</key><string>Viewer</string>
+    <key>LSHandlerRank</key><string>Alternate</string>
+    <key>LSItemContentTypes</key><array><string>com.adobe.pdf</string></array>
+  </dict></array>
+  <key>UTImportedTypeDeclarations</key><array>
+    <dict>
+      <key>UTTypeIdentifier</key><string>io.ikview.cbz-archive</string>
+      <key>UTTypeDescription</key><string>Comic book ZIP archive</string>
+      <key>UTTypeConformsTo</key><array><string>public.zip-archive</string><string>public.archive</string></array>
+      <key>UTTypeTagSpecification</key><dict><key>public.filename-extension</key><array><string>cbz</string></array></dict>
+    </dict><dict>
+      <key>UTTypeIdentifier</key><string>io.ikview.cbr-archive</string>
+      <key>UTTypeDescription</key><string>Comic book RAR archive</string>
+      <key>UTTypeConformsTo</key><array><string>com.rarlab.rar-archive</string><string>public.archive</string></array>
+      <key>UTTypeTagSpecification</key><dict><key>public.filename-extension</key><array><string>cbr</string></array></dict>
+    </dict><dict>
+      <key>UTTypeIdentifier</key><string>io.ikview.cbt-archive</string>
+      <key>UTTypeDescription</key><string>Comic book TAR archive</string>
+      <key>UTTypeConformsTo</key><array><string>public.tar-archive</string><string>public.archive</string></array>
+      <key>UTTypeTagSpecification</key><dict><key>public.filename-extension</key><array><string>cbt</string></array></dict>
+    </dict><dict>
+      <key>UTTypeIdentifier</key><string>com.rarlab.rar-archive</string>
+      <key>UTTypeDescription</key><string>RAR archive</string>
+      <key>UTTypeConformsTo</key><array><string>public.archive</string><string>public.data</string></array>
+      <key>UTTypeTagSpecification</key><dict><key>public.filename-extension</key><array><string>rar</string></array></dict>
+    </dict><dict>
+      <key>UTTypeIdentifier</key><string>org.7-zip.7-zip-archive</string>
+      <key>UTTypeDescription</key><string>7-Zip archive</string>
+      <key>UTTypeConformsTo</key><array><string>public.archive</string><string>public.data</string></array>
+      <key>UTTypeTagSpecification</key><dict><key>public.filename-extension</key><array><string>7z</string></array></dict>
+    </dict><dict>
+      <key>UTTypeIdentifier</key><string>cx.c3.lha-archive</string>
+      <key>UTTypeDescription</key><string>LHA archive</string>
+      <key>UTTypeConformsTo</key><array><string>public.archive</string><string>public.data</string></array>
+      <key>UTTypeTagSpecification</key><dict><key>public.filename-extension</key><array><string>lha</string><string>lzh</string></array></dict>
+    </dict>
+  </array>
+</dict></plist>
