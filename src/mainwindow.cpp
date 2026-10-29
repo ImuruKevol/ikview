@@ -603,10 +603,11 @@ struct MainWindow::Impl {
         imageAction(fileMenu, "데스크탑 배경으로 지정", QKeySequence("Ctrl+Alt+W"), [this] { setWallpaper(); }, true);
 #endif
         fileMenu->addSeparator();
-        auto *closeImage = action(fileMenu, "이미지 닫기", QKeySequence("Ctrl+W"), [this] { stopSlideshow(); cancelPendingPosition(); pendingRecentPaths.clear(); activePaths.clear(); doc->close(); errorBanner->hide(); updateSourceHint(); });
-        closeImage->setObjectName("closeImageAction");
         action(fileMenu, "창 닫기", QKeySequence("Ctrl+Shift+W"), [this] { q->close(); });
-        auto *quit = action(fileMenu, "ikview 종료", QKeySequence::Quit, [this] { q->close(); }); quit->setObjectName("quitApplicationAction"); quit->setMenuRole(QAction::QuitRole);
+        QKeySequence quitKey(QKeySequence::Quit);
+        if (quitKey.isEmpty()) quitKey = QKeySequence("Ctrl+Q");
+        auto *quit = action(fileMenu, "ikview 종료", quitKey, [this] { q->close(); }); quit->setObjectName("quitApplicationAction"); quit->setMenuRole(QAction::QuitRole);
+        quit->setShortcuts({quitKey, QKeySequence("Ctrl+W")});
 
         previousAction = action(viewMenu, "이전 이미지", QKeySequence(Qt::Key_Left), [this] { navigateFromKey(-1); });
         previousAction->setObjectName("previousImageAction"); useSymbol(previousAction, "left");

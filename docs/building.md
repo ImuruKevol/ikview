@@ -72,4 +72,4 @@ IKView는 GPL-3.0-or-later로 제공합니다. 현재 설치 파일에는 Exiv2�
 python3 scripts/package-sources.py
 ```
 
-생성한 `dist/ikview-0.7.1-source.tar.gz`와 `dist/ikview-source-validation.json`을 설치 ZIP과 함께 게시합니다. 설치 파일 다운로드 위치에 소스 다운로드 링크도 표시해야 합니다. 자세한 조건과 수집 범위는 [소스 제공과 배포 안내](licensing.md)를 확인하세요.
+생성한 `dist/ikview-0.7.2-source.tar.gz`와 `dist/ikview-source-validation.json`을 설치 ZIP과 함께 게시합니다. 설치 파일 다운로드 위치에 소스 다운로드 링크도 표시해야 합니다. 자세한 조건과 수집 범위는 [소스 제공과 배포 안내](licensing.md)를 확인하세요.

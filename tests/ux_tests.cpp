@@ -333,7 +333,7 @@ private slots:
         QCOMPARE(window.findChildren<QAction *>("recentSessionAction").size(), 1);
         QSettings settings(qEnvironmentVariable("IKVIEW_SETTINGS_PATH"), QSettings::IniFormat);
         const auto records = settings.value("recentSessions").toList(); QCOMPARE(records.size(), 1); QCOMPARE(records.first().toMap().value("paths").toStringList(), paths);
-        window.findChild<QAction *>("closeImageAction")->trigger(); QCOMPARE(document->count(), 0);
+        document->close(); QCOMPARE(document->count(), 0);
         window.findChild<QAction *>("recentSessionAction")->trigger();
         QTRY_VERIFY_WITH_TIMEOUT(!document->isBusy() && document->count() == 2 && !document->currentImage().isNull(), 5000);
         QCOMPARE(document->currentEntry().path, paths.last());
@@ -347,7 +347,7 @@ private slots:
         document->goTo(1); QTRY_VERIFY_WITH_TIMEOUT(!document->isBusy(), 5000);
         window.findChild<QAction *>("addBookmarkAction")->trigger();
         window.findChild<QAction *>("sortAction1")->trigger(); QCOMPARE(document->currentEntry().member, "page2.png");
-        window.findChild<QAction *>("closeImageAction")->trigger(); window.findChild<QAction *>("latestBookmarkAction")->trigger();
+        document->close(); window.findChild<QAction *>("latestBookmarkAction")->trigger();
         QTRY_VERIFY_WITH_TIMEOUT(!document->isBusy() && document->currentEntry().member == "page2.png" && !document->currentImage().isNull(), 5000); QCOMPARE(document->currentIndex(), 0);
         window.openPathsAt({path}, 1, 0);
         QTRY_VERIFY_WITH_TIMEOUT(!document->isBusy() && document->currentEntry().member == "page1.png" && !document->currentImage().isNull(), 5000); QCOMPARE(document->currentIndex(), 1);
@@ -477,17 +477,23 @@ private slots:
         QTRY_VERIFY_WITH_TIMEOUT(!document->isBusy() && !document->currentImage().isNull(), 5000);
         QCOMPARE(document->count(), 1); QCOMPARE(document->currentEntry().path, b); QVERIFY(!QFileInfo::exists(a)); QVERIFY(QFileInfo::exists(QDir(library).filePath("page1.png")));
         window.findChild<QAction *>("copyPhotoAction")->trigger(); QVERIFY(window.property("fileOperationPending").toBool());
-        window.findChild<QAction *>("closeImageAction")->trigger(); QCOMPARE(document->count(), 0);
-        QTRY_COMPARE_WITH_TIMEOUT(finished.size(), 2, 5000); QVERIFY(finished.last()[0].toBool()); QCOMPARE(document->count(), 0); QCOMPARE(document->currentIndex(), -1); QVERIFY(window.isVisible());
+        window.findChild<QAction *>("quitApplicationAction")->trigger();
+        QTRY_COMPARE_WITH_TIMEOUT(finished.size(), 2, 5000);
+        QVERIFY(finished.last()[0].toBool() || finished.last()[1].toBool());
+        QTRY_VERIFY_WITH_TIMEOUT(!window.isVisible(), 3000);
+        QVERIFY(QFileInfo::exists(b)); QCOMPARE(document->count(), 1);
     }
 
     void cancelledFileCopyPreservesSourceAndExistingDestination_data()
     {
-        QTest::addColumn<bool>("quit"); QTest::newRow("cancel-button") << false; QTest::newRow("standard-quit") << true;
+        QTest::addColumn<bool>("quit"); QTest::addColumn<bool>("shortcut");
+        QTest::newRow("cancel-button") << false << false;
+        QTest::newRow("standard-quit") << true << false;
+        QTest::newRow("command-w") << true << true;
     }
     void cancelledFileCopyPreservesSourceAndExistingDestination()
     {
-        QFETCH(bool, quit);
+        QFETCH(bool, quit); QFETCH(bool, shortcut);
         const QString source = m_temp->filePath("large.png"), library = m_temp->filePath("library"); QVERIFY(QDir().mkpath(library));
         QFile input(source); QVERIFY(input.open(QIODevice::WriteOnly)); const auto encoded = png(Qt::red); QCOMPARE(input.write(encoded), encoded.size());
         const QByteArray block(1024 * 1024, '\0'); for (int i = 0; i < 64; ++i) QCOMPARE(input.write(block), block.size()); input.close();
@@ -497,7 +503,7 @@ private slots:
         QTRY_VERIFY_WITH_TIMEOUT(!document->isBusy() && !document->currentImage().isNull(), 5000); QSignalSpy finished(&window, &ik::MainWindow::fileOperationFinished);
         confirmNextQuestion(&window);
         window.findChild<QAction *>("copyPhotoAction")->trigger();
-        if (quit) { auto *quitAction = window.findChild<QAction *>("quitApplicationAction"); QVERIFY(quitAction); QCOMPARE(quitAction->menuRole(), QAction::QuitRole); quitAction->trigger(); }
+        if (quit) { auto *quitAction = window.findChild<QAction *>("quitApplicationAction"); QVERIFY(quitAction); QCOMPARE(quitAction->menuRole(), QAction::QuitRole); if (shortcut) QTest::keyClick(&window, Qt::Key_W, Qt::ControlModifier); else quitAction->trigger(); }
         else window.findChild<QPushButton *>("cancelFileOperationButton")->click();
         QTRY_COMPARE_WITH_TIMEOUT(finished.size(), 1, 5000); QVERIFY(finished.last()[1].toBool()); QVERIFY(!finished.last()[0].toBool()); QVERIFY(QFileInfo::exists(source));
         QVERIFY(output.open(QIODevice::ReadOnly)); QCOMPARE(output.readAll(), QByteArray("original destination"));
@@ -1029,31 +1035,24 @@ private slots:
         QTRY_COMPARE_WITH_TIMEOUT(canvas->transformedImage().size(), document->currentImage().size(), 3000);
     }
 
-    void closeImageReturnsToEmptyAndCanReopen()
+    void closeShortcutClosesWindowInsteadOfClearingImage()
     {
         const QString directory = m_temp->filePath(QStringLiteral("photos")); QVERIFY(seedImages(directory));
         ik::MainWindow window; window.show(); window.openPaths({directory});
         auto *document = window.findChild<ik::Document *>();
         auto *canvas = window.findChild<ik::ImageCanvas *>();
         auto *list = window.findChild<QListView *>(QStringLiteral("fileList"));
-        auto *close = window.findChild<QAction *>(QStringLiteral("closeImageAction"));
+        auto *quit = window.findChild<QAction *>(QStringLiteral("quitApplicationAction"));
         auto *metadata = window.findChild<QTreeWidget *>();
-        QVERIFY(document); QVERIFY(canvas); QVERIFY(list); QVERIFY(close); QVERIFY(metadata);
+        QVERIFY(document); QVERIFY(canvas); QVERIFY(list); QVERIFY(quit); QVERIFY(metadata);
+        QVERIFY(!window.findChild<QAction *>(QStringLiteral("closeImageAction")));
         QTRY_VERIFY_WITH_TIMEOUT(!document->isBusy() && !document->currentImage().isNull(), 5000);
         QTRY_VERIFY_WITH_TIMEOUT(metadata->topLevelItemCount() > 0, 3000);
-        close->trigger();
-        QCOMPARE(document->count(), 0);
-        QCOMPARE(document->currentIndex(), -1);
-        QVERIFY(document->currentImage().isNull());
-        QTRY_VERIFY_WITH_TIMEOUT(canvas->transformedImage().isNull(), 3000);
-        QCOMPARE(list->model()->rowCount(), 0);
-        QCOMPARE(metadata->topLevelItemCount(), 0);
-        QVERIFY(window.isVisible());
-        window.openPaths({QDir(directory).filePath(QStringLiteral("page1.png"))});
-        QTRY_VERIFY_WITH_TIMEOUT(!document->isBusy() && !document->currentImage().isNull(), 5000);
-        QCOMPARE(document->currentEntry().name, QStringLiteral("page1.png"));
-        QTRY_VERIFY_WITH_TIMEOUT(metadata->topLevelItemCount() > 0, 3000);
-        QTRY_VERIFY_WITH_TIMEOUT(selectionMatches(list, document), 3000);
+        QVERIFY(quit->shortcuts().contains(QKeySequence("Ctrl+W")));
+        QTest::keyClick(&window, Qt::Key_W, Qt::ControlModifier);
+        QTRY_VERIFY_WITH_TIMEOUT(!window.isVisible(), 3000);
+        QCOMPARE(document->count(), 3);
+        QVERIFY(!document->currentImage().isNull());
     }
 };
 

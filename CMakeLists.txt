@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(ikview VERSION 0.7.1 LANGUAGES CXX)
+project(ikview VERSION 0.7.2 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -99,6 +99,10 @@ if(BUILD_TESTING)
   set_tests_properties(canvas_tests ux_tests input_tests preferences_tests preferences_integration_tests imagefilter_tests export_tests workflow_tests
     PROPERTIES LABELS "desktop-gui")
   set_tests_properties(shortcut_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+  add_executable(shutdown_tests tests/shutdown_tests.cpp)
+  target_link_libraries(shutdown_tests PRIVATE ikview_ui Qt6::Test)
+  add_test(NAME shutdown_tests COMMAND shutdown_tests)
+  set_tests_properties(shutdown_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_QUICK_BACKEND=software" TIMEOUT 60 LABELS "headless-ui")
   foreach(test_target IN ITEMS icon_tests toolbar_layout_tests design_tests)
     add_executable(${test_target} tests/${test_target}.cpp)
     target_link_libraries(${test_target} PRIVATE ikview_ui Qt6::Test)

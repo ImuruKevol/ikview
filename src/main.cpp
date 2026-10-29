@@ -115,10 +115,11 @@ int main(int argc,char **argv) {
     QQuickWindow::setGraphicsApi(QSGRendererInterface::Metal);
 #endif
     Application app(argc,argv);
+    app.setQuitOnLastWindowClosed(true);
     QCoreApplication::setOrganizationName("ikview");
     QCoreApplication::setOrganizationDomain("ikview.io");
     QCoreApplication::setApplicationName("ikview");
-    QCoreApplication::setApplicationVersion("0.7.1");
+    QCoreApplication::setApplicationVersion("0.7.2");
     QCommandLineParser parser; parser.setApplicationDescription("ikview — a native, Metal-accelerated image and PDF viewer");
     parser.addHelpOption();parser.addVersionOption();parser.addPositionalArgument("files","Images, PDFs, folders or archives; extensions for --default-status/--set-default.","[files...]");
     parser.addOption({"generate-demo","Generate demo images and exit.","directory"});

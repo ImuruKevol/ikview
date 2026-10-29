@@ -13,7 +13,7 @@ IKView는 Qt·libarchive·Exiv2 등의 외부 라이브러리를 사용합니다
 
 ## 현재 배포본
 
-0.7.1 배포본은 Qt 6.12.0·libarchive 3.8.10·Exiv2 0.28.9를 동적으로 연결합니다. Exiv2는 소스 빌드에서 선택 의존성이지만 **현재 설치 파일에는 포함되어 있습니다**. GPL 라이브러리와 결합한 배포물에는 GPL 조건을 준수해야 하며, 동적 연결이라는 이유로 이 조건이 없어지지 않습니다. [GNU의 GPL 라이브러리 연결 안내](https://www.gnu.org/licenses/gpl-faq.html#IfLibraryIsGPL)
+0.7.2 배포본은 Qt 6.12.0·libarchive 3.8.10·Exiv2 0.28.9를 동적으로 연결합니다. Exiv2는 소스 빌드에서 선택 의존성이지만 **현재 설치 파일에는 포함되어 있습니다**. GPL 라이브러리와 결합한 배포물에는 GPL 조건을 준수해야 하며, 동적 연결이라는 이유로 이 조건이 없어지지 않습니다. [GNU의 GPL 라이브러리 연결 안내](https://www.gnu.org/licenses/gpl-faq.html#IfLibraryIsGPL)
 
 Qt Core·Gui·Widgets·Quick·Qml·Concurrent·PrintSupport·Network·OpenGL·Svg 관련 라이브러리와 플러그인, 이미지 코덱·압축·TLS 등 간접 의존성이 포함됩니다. 정확한 목록·버전·라이선스 식별자는 배포 앱의 `Contents/Resources/third-party/libraries.json`에 기록합니다. Homebrew의 라이선스 식별자는 패키지 전체를 요약하므로, 실제로 사용한 라이브러리와 도구의 조건은 원문으로 구분해야 합니다.
 

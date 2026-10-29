@@ -37,7 +37,7 @@ python3 scripts/package-sources.py
 | 파일 | 내용 |
 | --- | --- |
 | `ikview-macos-arm64.zip` | 설치 앱 |
-| `ikview-0.7.1-source.tar.gz` | 같은 버전의 IKView 소스, 번들 라이브러리 원본 소스·패치·빌드 레시피 |
+| `ikview-0.7.2-source.tar.gz` | 같은 버전의 IKView 소스, 번들 라이브러리 원본 소스·패치·빌드 레시피 |
 | `ikview-package-validation.json` | 앱·설치 파일 해시와 검사 결과 |
 | `ikview-source-validation.json` | 소스 커밋과 소스 묶음 해시 |
 

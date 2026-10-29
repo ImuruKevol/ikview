@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/%EB%B2%84%EC%A0%84-0.7.1-64D3BF?style=flat-square&amp;labelColor=1B242E" alt="버전 0.7.1">
+  <img src="https://img.shields.io/badge/%EB%B2%84%EC%A0%84-0.7.2-64D3BF?style=flat-square&amp;labelColor=1B242E" alt="버전 0.7.2">
   <img src="https://img.shields.io/badge/macOS-26%2B-1B242E?style=flat-square" alt="macOS 26 이상">
   <img src="https://img.shields.io/badge/%EC%96%B8%EC%96%B4-C%2B%2B20-3479B8?style=flat-square" alt="개발 언어 C++20">
 </p>
@@ -82,6 +82,7 @@ PNG·WebP·TIFF·PDF 변환은 투명·반투명 여백을 지원합니다. PDF�
 | 동작 | 단축키 |
 | --- | --- |
 | 파일·폴더 열기 | ⌘O |
+| 앱 종료 | ⌘W 또는 ⌘Q |
 | 이전 / 다음 | ← / → 또는 ⇧Space / Space |
 | 화면 맞춤 / 100% / 폭 맞춤 | 1 / 0 / 8 |
 | 확대 / 축소 | + / − 또는 트랙패드 핀치 |

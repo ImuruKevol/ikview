@@ -217,7 +217,7 @@ private slots:
         QCOMPARE(doc->count(), includeParent ? 3 : 1);
         QCOMPARE(doc->currentEntry().path, second);
         QCOMPARE(doc->isFileScoped(), !includeParent);
-        auto *close = window.findChild<QAction *>("closeImageAction"); QVERIFY(close); close->trigger();
+        doc->close();
         const auto third = QDir(imagesPath()).filePath("page3.png");
         window.openPaths({third});
         QTRY_VERIFY_WITH_TIMEOUT(!doc->isBusy() && !doc->currentImage().isNull(), 5000);
@@ -337,7 +337,7 @@ private slots:
         QTRY_VERIFY_WITH_TIMEOUT(!doc->isBusy() && !doc->currentImage().isNull(), 5000);
         add->trigger(); doc->goTo(1); QTRY_VERIFY_WITH_TIMEOUT(!doc->isBusy() && doc->currentIndex() == 1, 5000);
         add->trigger(); QCOMPARE(bookmarks().size(), 2);
-        sort->trigger(); window.findChild<QAction *>("closeImageAction")->trigger(); latest->trigger();
+        sort->trigger(); doc->close(); latest->trigger();
         QTRY_VERIFY_WITH_TIMEOUT(!doc->isBusy() && doc->currentEntry().member == "page2.png" && !doc->currentImage().isNull(), 5000);
         QCOMPARE(doc->currentImage().pixelColor(0, 0), QColor(Qt::blue));
         QTRY_COMPARE_WITH_TIMEOUT(bookmarks().size(), 1, 3000);
